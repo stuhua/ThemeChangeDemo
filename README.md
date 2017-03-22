@@ -15,4 +15,4 @@
 # 特点
 
 # CHANGELOG
-
+1. Error:(351, 21) No resource found that matches the given name: attr 'textColorPrimary'.
