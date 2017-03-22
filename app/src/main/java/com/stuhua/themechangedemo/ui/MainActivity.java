@@ -7,14 +7,23 @@ import android.widget.Button;
 
 import com.orhanobut.logger.Logger;
 import com.stuhua.themechangedemo.R;
+import com.stuhua.themechangedemo.utils.SPUtils;
 
 public class MainActivity extends AppCompatActivity {
     public Button btn1, btn2, btn3;
+    public static final String KEY_MODE1 = "mode1";
+    public static final String KEY_MODE2 = "mode2";
+    public static final String KEY_MODE3 = "mode3";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setTheme(R.style.AppTheme_Night);
+        boolean mode = (boolean) SPUtils.get(this, KEY_MODE1, true);
+        if (mode) {
+            setTheme(R.style.MyTheme);
+        } else {
+            setTheme(R.style.MyThemeNight);
+        }
         setContentView(R.layout.activity_main);
     }
 
@@ -31,6 +40,8 @@ public class MainActivity extends AppCompatActivity {
 
     public void changeTheme1(View view) {
         Logger.d("view=" + view.getId());
+        boolean mode = (boolean) SPUtils.get(this, KEY_MODE1, true);
+        SPUtils.put(this, KEY_MODE1, !mode);
         MainActivity.this.recreate();
     }
 
