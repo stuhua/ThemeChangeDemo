@@ -15,4 +15,7 @@
 # 特点
 
 # CHANGELOG
-1. Error:(351, 21) No resource found that matches the given name: attr 'textColorPrimary'.
+
+1. 只有\<item name="android:textColorPrimary">\</item>
+
+*Error:(351, 21) No resource found that matches the given name: attr 'textColorPrimary'.*
