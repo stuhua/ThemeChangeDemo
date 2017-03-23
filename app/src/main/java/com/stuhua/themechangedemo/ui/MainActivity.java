@@ -13,6 +13,7 @@ import com.stuhua.themechangedemo.R;
 import com.stuhua.themechangedemo.utils.SPUtils;
 
 import java.io.File;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 import dalvik.system.DexClassLoader;
@@ -51,6 +52,22 @@ public class MainActivity extends AppCompatActivity {
 
     public <T extends View> T getViewByID(int id) {
         return (T) findViewById(id);
+    }
+
+
+    public void changeTheme1(View view) {
+        Logger.d("view=" + view.getId());
+        boolean mode = (boolean) SPUtils.get(this, KEY_MODE1, true);
+        SPUtils.put(this, KEY_MODE1, !mode);
+        MainActivity.this.recreate();
+    }
+
+    public void changeTheme2(View view) {
+        String dexPath = "data/app/com.stuhua.resourceload-2.apk";
+        File fileRelease = getDir("dex", 0);
+        mDexClassLoader = new DexClassLoader(dexPath, fileRelease.getAbsolutePath(), null, getClassLoader());
+        loadResource(dexPath);
+        setContent();
     }
 
     /**
@@ -98,19 +115,16 @@ public class MainActivity extends AppCompatActivity {
         return mTheme == null ? super.getTheme() : mTheme;
     }
 
-    public void changeTheme1(View view) {
-        Logger.d("view=" + view.getId());
-        boolean mode = (boolean) SPUtils.get(this, KEY_MODE1, true);
-        SPUtils.put(this, KEY_MODE1, !mode);
-        MainActivity.this.recreate();
-    }
-
-    public void changeTheme2(View view) {
-        String dexPath = "data/app/com.stuhua.resourceload-2.apk";
-        File fileRelease = getDir("dex", 0);
-        mDexClassLoader = new DexClassLoader(dexPath, fileRelease.getAbsolutePath(), null, getClassLoader());
-        loadResource(dexPath);
-        setContent();
+    public int getDayThemeId() {
+        try {
+            Class clazz = mDexClassLoader.loadClass("com.stuhua.resourceload.R$style");
+            Field field = clazz.getField("MyTheme");
+            int resId = (int) field.get(null);
+            return resId;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
     }
 
     public void changeTheme3(View view) {
