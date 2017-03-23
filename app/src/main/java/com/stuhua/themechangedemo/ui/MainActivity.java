@@ -36,6 +36,8 @@ public class MainActivity extends AppCompatActivity {
         } else {
             setTheme(R.style.MyThemeNight);
         }
+
+
         setContentView(R.layout.activity_main);
         initView();
     }
@@ -60,9 +62,7 @@ public class MainActivity extends AppCompatActivity {
             Class clazz = mDexClassLoader.loadClass("com.stuhua.resourceload.UiUtils");
             Method method = clazz.getMethod("getTextString", Context.class);
             String str = (String) method.invoke(null, this);
-            btn2.setText(str.toString());
-            Logger.d(str);
-
+            btn2.setText(str);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -78,8 +78,6 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         Resources superRes = super.getResources();
-        superRes.getDisplayMetrics();
-        superRes.getConfiguration();
         mResources = new Resources(mAssetManager, superRes.getDisplayMetrics(), superRes.getConfiguration());
         mTheme = mResources.newTheme();
         mTheme.setTo(super.getTheme());
